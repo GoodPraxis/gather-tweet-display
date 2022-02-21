@@ -1,10 +1,7 @@
-import functools
-import http.server
 import os
 import requests
-import socketserver
 import textwrap
-import threading
+import json
 from PIL import Image, ImageDraw
 from config import twitter_token, twitter_userid, gather_api_key, gather_space_id, gather_object_name, domain, gather_map_id
 from time import sleep
@@ -43,22 +40,13 @@ def update_object_image(map_id, name, img):
   )
 
 
-Handler = functools.partial(
-  http.server.SimpleHTTPRequestHandler,
-  directory=STATIC_FOLDER,
-)
-
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-  thread = threading.Thread(target = httpd.serve_forever)
-
-
 while True:
   response = requests.get(
     'https://api.twitter.com/2/users/{}/tweets?max_results=5'.format(twitter_userid),
     headers={'Authorization': 'Bearer {}'.format(twitter_token)})
   try:
-    json = response.json()
-    tweet = json['data'][0]
+    jsondata = response.json()
+    tweet = jsondata['data'][0]
     text = tweet['text']
     tweet_id = tweet['id']
     img = Image.new('RGB', (256, 64), color = BACKGROUND_COLOR)
@@ -70,9 +58,9 @@ while True:
       os.makedirs(STATIC_FOLDER)
 
     img.save('./{}/{}.png'.format(STATIC_FOLDER, tweet_id))
-
-    update_object_image(gather_map_id, gather_object_name, '{}/{}.png'.format(domain, tweet_id))
   except:
     print('Could not retrieve tweet')
+
+  update_object_image(gather_map_id, gather_object_name, '{}/{}.png'.format(domain, tweet_id))
 
   sleep(60)
