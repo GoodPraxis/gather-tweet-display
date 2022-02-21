@@ -52,7 +52,7 @@ while True:
     img = Image.new('RGB', (256, 64), color = BACKGROUND_COLOR)
 
     d = ImageDraw.Draw(img)
-    d.text((4,4), textwrap.fill(text, width = 42), fill = TEXT_COLOR)
+    d.text((4,4), textwrap.fill(text.encode('latin-1', 'ignore').decode(), width = 42), fill = TEXT_COLOR)
 
     if not os.path.exists(STATIC_FOLDER):
       os.makedirs(STATIC_FOLDER)
