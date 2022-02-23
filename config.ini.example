@@ -1,11 +1,12 @@
 [GLOBAL]
-DOMAIN=https://gather.goodpraxis.coop
+DOMAIN=your_domain_here
 
 [TWITTER]
-TOKEN=AAAAAAAAAAAAAAAAAAAAANLrZQEAAAAAmoJiKrD5h375nq9hBpoKJazkN3Y%3DCB5zXLItfGgBoWR258Vr58EwgiyRi4LrmqfARMK7vUFtuEuREl
-USERID=1083866306414288896
+TOKEN=your_token_here
+USERID=your_twitter_user_id_here
 
 [GATHER]
-API_KEY=api_key
-SPACE_ID=space_id
-OBJECT_NAME=tweetdisplay
+API_KEY=your_gather_town_API_key_here
+SPACE_ID=your_gather_town_space_id_here
+OBJECT_NAME=tweetd
+MAP_ID=your_gather_town_map_id_here
