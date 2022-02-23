@@ -70,8 +70,11 @@ def update_object_image(map_id, name, img):
         headers=headers,
     )
 
+last_tweet_id = 0
 
 while True:
+    tweet_id = 0
+
     response = requests.get(
         'https://api.twitter.com/2/users/{}/tweets?max_results=5'.format(
             twitter_userid),
@@ -81,20 +84,24 @@ while True:
         tweet = jsondata['data'][0]
         text = format_tweet_text(tweet['text'])
         tweet_id = tweet['id']
-        img = Image.new('RGB', (256, 64), color=BACKGROUND_COLOR)
+        if tweet_id != last_tweet_id:
+            print("Updating")
+            img = Image.new('RGB', (256, 64), color=BACKGROUND_COLOR)
 
-        d = ImageDraw.Draw(img)
-        d.text((4, 4), textwrap.fill(text.encode(
-            'latin-1', 'ignore').decode(), width=42), fill=TEXT_COLOR)
+            d = ImageDraw.Draw(img)
+            d.text((4, 4), textwrap.fill(text.encode(
+                'latin-1', 'ignore').decode(), width=42), fill=TEXT_COLOR)
 
-        if not os.path.exists(STATIC_FOLDER):
-            os.makedirs(STATIC_FOLDER)
+            if not os.path.exists(STATIC_FOLDER):
+                os.makedirs(STATIC_FOLDER)
 
-        img.save('./{}/{}.png'.format(STATIC_FOLDER, tweet_id))
+            img.save('./{}/{}.png'.format(STATIC_FOLDER, tweet_id))
+            update_object_image(gather_map_id, gather_object_name,
+                            '{}/{}.png'.format(domain, tweet_id))
+
+            last_tweet_id = tweet_id
     except:
-        print('Could not retrieve tweet')
+        print('Could not update tweet')
 
-    update_object_image(gather_map_id, gather_object_name,
-                        '{}/{}.png'.format(domain, tweet_id))
 
     sleep(60)
