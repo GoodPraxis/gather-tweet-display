@@ -35,6 +35,6 @@ have (e.g. `tweetd`).
 
 Now setup a web server to host the generated images under `DOMAIN`. Make sure
 you set an `Access-Control-Allow-Origin` header to either a wildcard `*` or to
-`https://gather.town`.
+`https://gather.town`. The generated images will be in a folder called `static`.
 
 Finally, run `app.py` either in a `screen` or as a service.
